@@ -1,0 +1,70 @@
+#intro_screen
+{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	opacity: 0;
+	-webkit-transform: scale(2,2);
+  	-ms-transform: scale(2,2);
+  	transform: scale(2,2);
+  	transition: opacity 1s, transform 1s;
+
+  	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+#game_screen
+{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	opacity: 0;
+	transition: opacity 1s;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+#intro_screen.active_screen
+{
+	opacity: 1;
+	-webkit-transform: scale(1,1);
+  	-ms-transform: scale(1,1);
+  	transform: scale(1,1);
+  	z-index: 10;
+}
+
+#game_screen.active_screen
+{
+	opacity: 1;
+}
+
+.container p{
+	width: 100%;
+	text-align: center;
+}
+
+#titleText_wrapper{
+	position: absolute;
+	top: 35%;
+}
+
+#bottomText_wrapper{
+	position: absolute;
+	bottom: 30%;
+}
+
+#room_no{
+	padding-top: 10px;
+	font-size: 16px;
+	font-family: Noto Serif KR, Georgia, serif;
+}
+
+.title{
+	margin-bottom: 25px;
+}
+

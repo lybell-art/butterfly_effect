@@ -7,7 +7,10 @@
 		html, body {margin:0; padding:0; overflow:hidden;} 
 	</style>
 	<link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/game.css">
 	<link rel="shortcut icon" href="#">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.0/p5.min.js"></script>
 </head>
 <body>
 	<noscript>
@@ -16,6 +19,21 @@
 			<p>This page uses javascript. Please enable javascript in your browser settings and reflesh the page.</p>
 		</div>
 	</noscript>
-	<p>Gamer's Page!</p>
+	<div id="intro_screen" class="container active_screen">
+		<div id="titleText_wrapper">
+			<p class="title">Butterfly Effect</p>
+			<p class="plain_txt">Does the Flap of a Butterfly's Wings in Brazil Set Off a Tornado in Texas?</p>
+			<p class="plain_txt">브라질에서 한 나비의 날갯짓이 텍사스에서 돌풍을 일으킬 수 있는가?</p>
+		</div>
+		<div id="bottomText_wrapper">
+			<div id="start_button" class="button" ><p>Press Start</p></div>
+			<p id="room_no" class="roomNo" >Room No : </p>
+		</div>
+	</div>
+	<div id="game_screen" class="container">
+		<p>이것은 그것이다!</p>
+		<div id="game"></div>
+	</div>
+	<script type="text/javascript" src="js/gameScreen.js"></script>
 </body>
 </html>
