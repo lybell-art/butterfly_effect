@@ -23,9 +23,23 @@ io.on('connection', function(socket){
   socket.emit("Room", room);
   console.log(socket.id, 'is joined to ', socket.room);
 
+  socket.on('Switch_Room', function(roomNo){
+    socket.leave(socket.room);
+    socket.join(roomNo);
+    socket.room = roomNo;
+    console.log(socket.id, 'is joined to ', socket.room);
+  })
+
+  socket.on('Send_Control', function(v){
+//    console.log(socket.room, v.x, v.y);
+    socket.broadcast.to(socket.room).emit("Receive_Control", v);
+  })
+
   socket.on('disconnect', function(){
     console.log('user disconnected: ', socket.id);
   });
+
+
 });
 
 let port = process.env.PORT || 3000;

@@ -30,13 +30,24 @@
 			<p id="room_no" class="roomNo" >Room No : </p>
 		</div>
 	</div>
-	<div id="game_screen" class="container">
-		<p>이것은 그것이다!</p>
-		<div id="game"></div>
-		<p id="room_no" class="roomNo" >Room No : </p>
+	<div id="game_screen" class="container ">
+		<div id="bg_txt">
+			Butterfly<br/>Effect
+		</div>
+		<div id="game_upper">
+			<div id="score">SCORE : 0</div>
+			<div id="life">
+				<img class="life_icon" src="assets/butterfly.png" />
+				<img class="life_icon" src="assets/butterfly.png" />
+				<img class="life_icon" src="assets/butterfly.png" />
+			</div>
+		</div>
+		<div id="game_border"><div id="game"></div></div>
+		<p id="game_lower" class="roomNo" >Room No : </p>
 	</div>
 
 	<script src="js/libs/socket.io.min.js"></script>
 	<script type="text/javascript" src="js/gameScreen.js"></script>
+	<script type="text/javascript" src="js/game.js"></script>
 </body>
 </html>

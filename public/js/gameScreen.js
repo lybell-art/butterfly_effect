@@ -1,4 +1,6 @@
 const socket = io();
+let isGamePlaying=false;
+
 
 function transitionScreen(toGame)
 {
@@ -18,6 +20,7 @@ function transitionScreen(toGame)
 function game_start()
 {
 	transitionScreen(true);
+	isGamePlaying=true;
 }
 
 let startButton=document.getElementById('start_button');

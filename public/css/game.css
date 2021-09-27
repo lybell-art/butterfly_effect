@@ -68,17 +68,92 @@
 	margin-bottom: 25px;
 }
 
-#game{
+#game_border{
 	border: 2px solid #ffffff;
-	margin-top: 10px;
+	margin-top: 0px;
 	margin-bottom: 10px;
 	width: 720px;
 	height: 480px;
 }
 
+#game{
+	width: 100%;
+	height: 100%;
+}
+
+#bg_txt{
+	color: #ffffff30;
+	font-size: 150px;
+	position: fixed;
+	text-align: right;
+	right: -10px;
+	bottom: -50px;
+	font-family: Noto Serif KR, Georgia, serif;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	-moz-user-drag: none;
+	user-drag: none;
+}
+
+#game_upper{
+	width: 720px;
+
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+
+	-webkit-box-orient: horizontal;
+	-moz-box-orient: horizontal;
+	box-orient: horizontal;
+
+	-webkit-box-pack: center;
+	-moz-box-pack: center;
+	box-pack: center;
+
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	box-align: center;
+}
+
+#game_lower{
+	width: 720px;
+	text-align: right;
+	font-family: Noto Serif KR, Georgia, serif;
+	font-size: 18px;
+}
+
+#score{
+	color: #ffffff;
+	width: 50%;
+	font-family: Noto Serif KR, Georgia, serif;
+	font-size: 24px;
+	text-align: left;
+}
+#life{
+	width: 50%;
+	text-align: right;
+}
+
+#life img{
+	width: 48px;
+	display: inline-block;
+}
+
 @media (max-width: 960px) {
+	#game_border{
+		width: 540px;
+		height: 360px;
+	}
   #game{
-  	width: 540px;
-	height: 360px;
+  	transform: translate(-67.5px, -45px) scale(0.75,0.75) ;
+	}
+	#game_upper{
+		width: 540px;
+	}
+	#game_lower{
+		width: 540px;
 	}
 }
