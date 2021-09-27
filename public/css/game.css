@@ -68,3 +68,17 @@
 	margin-bottom: 25px;
 }
 
+#game{
+	border: 2px solid #ffffff;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 720px;
+	height: 480px;
+}
+
+@media (max-width: 960px) {
+  #game{
+  	width: 540px;
+	height: 360px;
+	}
+}

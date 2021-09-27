@@ -1,3 +1,5 @@
+const socket = io();
+
 function transitionScreen(toGame)
 {
 	const intro_screen=document.getElementById('intro_screen');
