@@ -1,0 +1,15 @@
+{
+  "name": "butterfly_effect",
+  "version": "0.0.1",
+  "description": "2021 Media Art Studio First Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.2.0"
+  }
+}
