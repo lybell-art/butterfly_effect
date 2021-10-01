@@ -1,0 +1,223 @@
+#preview_canvas{
+	position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#intro_screen
+{
+  	transition: opacity 1s;
+}
+
+#waiting_screen
+{
+	background-color: #000000;
+	transition: opacity 1s;
+}
+
+
+#show_screen
+{
+  	transition: opacity 1s;
+  	z-index: -10;
+}
+
+.border_wrapper{
+	border: 2px solid #ffffff;
+	width: 720px;
+	height: 480px;
+
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+
+	-webkit-box-orient: horizontal;
+	-moz-box-orient: horizontal;
+	box-orient: horizontal;
+
+	-webkit-box-pack: center;
+	-moz-box-pack: center;
+	box-pack: center;
+
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	box-align: center;
+}
+
+#titleText_wrapper{
+	position: absolute;
+	top: 35%;
+	width: inherit;
+}
+
+#bottomText_wrapper{
+	position: absolute;
+	bottom: 35%;
+	width: inherit;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#waiting_wrapper{
+	display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container .roomNo_caption{
+	font-size: 16px;
+	width: 428px;
+	text-align: left;
+	font-family: Noto Serif KR, Georgia, serif;
+}
+
+#no_room_warning{
+	color: #ff4321;
+	opacity: 0;
+	transition: opacity 1s;
+}
+
+#no_room_warning.showing{
+	animation: smoothShow 1s 2 alternate ease;
+}
+
+#roomNo_form{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+#type_roomNo{
+	background: transparent;
+    border: 2px solid #ffffff;
+    font-family: 'Noto Serif KR';
+    color: #ffffff;
+    width: 240px;
+    height: 60px;
+    margin-right: 10px;
+	padding: 0px 10px;
+	font-size: 32px;
+}
+
+#type_roomNo:focus
+{
+	outline:none;
+	box-shadow: 0 0 5px #fff, 0 0 10px #72d6ff;
+}
+
+#join_button{
+	width: 150px;
+	height: 60px;
+	font-size: 16px;
+}
+
+#leave_button{
+	width: 150px;
+	height: 60px;
+	font-size: 16px;
+	margin-top: 50px;
+}
+
+#bg_txt{
+	color: #ffffff30;
+	font-size: 150px;
+	position: fixed;
+	text-align: left;
+	line-height: 100%;
+	top: 140px;
+	right: -180px;
+	transform: rotate(90deg);
+	font-family: Noto Serif KR, Georgia, serif;
+	
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	-moz-user-drag: none;
+	user-drag: none;
+}
+
+#waiting_ico{
+	animation: waiting_butterfly 1s infinite ease;
+}
+
+@media (max-width: 960px) {
+	.border_wrapper{
+		width: calc(100% - 60px);
+		height: calc(100% - 80px);
+		padding: 10px;
+	}
+	#titleText_wrapper{
+		top: 28%;
+	}
+	#bottomText_wrapper{
+		bottom: 20%;
+	}
+
+	.title{
+		font-size: 36px;
+	}
+
+	.container .roomNo_caption{
+		width: 100%;
+		text-align: center;
+	}
+	#roomNo_form{
+		flex-direction: column;
+	}
+	#type_roomNo{
+		border: none;
+		border-bottom: 2px solid #ffffff;
+		width: 160px;
+		margin-right: 0px;
+		margin-bottom: 10px;
+		text-align: center;
+	}
+	#type_roomNo:focus
+	{
+		box-shadow: none;
+		text-shadow: 0 0 5px #fff, 0 0 10px #72d6ff;
+	}
+	#join_buttom{
+		width: 120px;
+	}
+}
+
+/*Animation*/
+@-webkit-keyframes smoothShow {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes smoothShow {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes waiting_butterfly {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
+}

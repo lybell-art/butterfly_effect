@@ -7,6 +7,7 @@
 		html, body {margin:0; padding:0; overflow:hidden;} 
 	</style>
 	<link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+	<link href="http://fonts.cdnfonts.com/css/sf-pixelate" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/game.css">
 	<link rel="shortcut icon" href="#">
@@ -42,7 +43,13 @@
 				<img class="life_icon" src="assets/butterfly.png" />
 			</div>
 		</div>
-		<div id="game_border"><div id="game"></div></div>
+		<div id="game_border">
+			<div id="game" ></div>
+			<div id="game_over_screen" style="display:none;">
+				<p class="gameover_txt">GAME OVER</p>
+				<div id="return_button" class="button">Return</div>
+			</div>
+		</div>
 		<p id="game_lower" class="roomNo" >Room No : </p>
 	</div>
 

@@ -7,6 +7,9 @@
 		html, body {margin:0; padding:0; overflow:hidden;} 
 	</style>
 	<link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+	<link href="http://fonts.cdnfonts.com/css/sf-pixelate" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/performance.css">
 	<link rel="shortcut icon" href="#">
 </head>
 <body>
@@ -16,7 +19,35 @@
 			<p>This page uses javascript. Please enable javascript in your browser settings and reflesh the page.</p>
 		</div>
 	</noscript>
-	<p>Test Page!</p>
+	<div id="intro_screen" class="container active_screen">
+		<div id="preview_canvas"></div> <!-- three.js component -->
+		<div id="bg_txt">Butterfly<br/>Effect</div>
+		<div class="border_wrapper">
+			<div id="titleText_wrapper">
+				<p class="title">Butterfly Effect</p>
+				<p class="plain_txt">Does the Flap of a Butterfly's Wings in Brazil Set Off a Tornado in Texas?</p>
+				<p class="plain_txt">브라질에서 한 나비의 날갯짓이 텍사스에서 돌풍을 일으킬 수 있는가?</p>
+			</div>
+			<div id="bottomText_wrapper">
+				<p class="roomNo_caption">Room no:</p>
+				<div id="roomNo_form">
+					<input id="type_roomNo" type="text" placeholder="#"/>
+					<div id="join_button" class="button" >Join the Performance</div>
+				</div>
+				<p id="no_room_warning" class="roomNo_caption">There is no room #00000</p>
+			</div>
+		</div>
+	</div>
+	<div id="waiting_screen" class="container ">
+		<div id="waiting_wrapper" class="border_wrapper">
+			<img id="waiting_ico" src="assets/butterfly_white.png" />
+			<p class="title">Preparing...</p>
+			<p class="plain_txt">The performance has not started or is already in progress. Please hold on a minute.</p>
+			<p class="plain_txt">공연이 아직 준비 중이거나 이전 공연이 진행 중에 있습니다. 잠시 기다려 주세요.</p>
+			<div id="leave_button" class="button" >Leave the Room</div>
+		</div>
+	</div>
+	<div id="show_canvas" class="container"></div>
 	<script src="js/libs/socket.io.min.js"></script>
 	<script type="text/javascript" src="js/performance.js"></script>
 </body>
