@@ -1,5 +1,6 @@
 const socket = io();
 let isGamePlaying=false;
+const BGM = new Audio("assets/music/Butterfly-and-Storm-2019.mp3");
 
 
 function transitionScreen(toGame)
@@ -26,6 +27,7 @@ function game_start()
 	resetUI();
 	document.getElementById("game_over_screen").style.display='none';
 	document.getElementById("game").style.display='';
+	BGM.play();
 }
 
 function game_end()

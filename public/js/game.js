@@ -109,14 +109,13 @@ class BE_player
 		this.invinsibleTime = 60;
 		decreaseLifeIcon();
 		this.scoreUp(-300);
-		console.log(this.life);
+//		console.log(this.life);
 	}
 	render(d)
 	{
-//		console.log(this.invinsibleTime);
-		if(this.invinsibleTime % 20 >= 10) d.tint(255, 128);
-		d.image(this.sprite, this.x+d.width/2,this.y+d.height/2,this.scale,this.scale);
-		if(this.invinsibleTime % 20 >= 10) d.tint(255, 255);
+//		if(this.invinsibleTime % 20 >= 10) d.tint(255, 128); //main reason for frame drop
+		if(this.invinsibleTime % 20 < 10) d.image(this.sprite, this.x+d.width/2,this.y+d.height/2,this.scale,this.scale);
+//		if(this.invinsibleTime % 20 >= 10) d.tint(255, 255);
 		if(this.invinsibleTime > 0) this.invinsibleTime--;
 	}
 }
@@ -129,8 +128,9 @@ class BE_bullet{
 		this.y=_y;
 		this.dx=Math.sin(_r)*2;
 		this.dy=Math.cos(_r)*2;
-		this.scale=28;
 		this.hitboxRadius=8;
+
+		this.isActive=true;
 	}
 	static setSprite(source)
 	{
@@ -151,6 +151,7 @@ class BE_bullet{
 	}
 	hitCheck(player)
 	{
+		if(!this.isActive) return false;
 		let hitDistance=this.hitboxRadius + player.hitboxRadius;
 		if(distanceSq(this.x, this.y, player.x, player.y) < hitDistance*hitDistance)
 		{
@@ -166,6 +167,7 @@ class BE_bullet{
 
 	move(player)
 	{
+		if(!this.isActive) return;
 		this.x+=this.dx;
 		this.y+=this.dy;
 	}
@@ -186,7 +188,8 @@ class BE_normalBullet extends BE_bullet{
 	}
 	render(d)
 	{
-		d.image(BE_normalBullet.sprite, this.x+d.width/2,this.y+d.height/2,this.scale,this.scale);
+		if(!this.isActive) return;
+		d.image(BE_normalBullet.sprite, this.x+d.width/2,this.y+d.height/2);
 	}
 }
 class BE_bounceBullet extends BE_bullet{
@@ -217,6 +220,7 @@ class BE_bounceBullet extends BE_bullet{
 	}
 	move(player)
 	{	
+		if(!this.isActive) return;
 		super.move(player);
 		if(this.bounceCount > 0)
 		{
@@ -226,7 +230,8 @@ class BE_bounceBullet extends BE_bullet{
 	}
 	render(d)
 	{
-		d.image(BE_bounceBullet.sprite, this.x+d.width/2,this.y+d.height/2,this.scale,this.scale);
+		if(!this.isActive) return;
+		d.image(BE_bounceBullet.sprite, this.x+d.width/2,this.y+d.height/2);
 	}
 }
 
@@ -259,6 +264,7 @@ class BE_contrailBullet extends BE_bullet{
 	}
 	move(player)
 	{	
+		if(!this.isActive) return;
 		const boost=1.03;
 		super.move(player);
 		this.dx *= boost;
@@ -272,10 +278,11 @@ class BE_contrailBullet extends BE_bullet{
 	}
 	render(d)
 	{
+		if(!this.isActive) return;
 		d.push();
 		d.translate(this.x+d.width/2,this.y+d.height/2);
-		d.rotate(Math.PI-this.r);
-		d.image(BE_contrailBullet.sprite, 0,0,this.scale,this.scale);
+		d.rotate(-this.r);
+		d.image(BE_contrailBullet.sprite, 0,0);
 		d.pop();
 	}
 }
@@ -322,16 +329,18 @@ class BE_bloomBullet extends BE_bullet{
 	}
 	move(player)
 	{	
+		if(!this.isActive) return;
 		super.move(player);
 		this.dx *= this.friction;
 		this.dy *= this.friction;
 	}
 	render(d)
 	{
+		if(!this.isActive) return;
 		d.push();
 		d.translate(this.x+d.width/2,this.y+d.height/2);
 		d.rotate(this.r);
-		d.image(BE_bloomBullet.sprite, 0,0,this.scale,this.scale);
+		d.image(BE_bloomBullet.sprite, 0,0);
 		d.pop();
 	}
 }
@@ -429,7 +438,7 @@ class bulletSystem_basic extends bulletSystem{
 	shootBullets(delta)
 	{
 		this.nextShootTime += delta;
-		if(this.nextShootTime > this.shootingDuration)
+		if(this.nextShootTime >= 0)
 		{
 			this.nextShootTime -= this.shootingDuration;
 			let posData=this.setBulletPos();
@@ -484,7 +493,7 @@ class bulletSystem_slide extends bulletSystem
 	{
 		this.nextShootTime += delta;
 		this.nextRotateTime += delta;
-		if(this.nextShootTime > this.shootingDuration)
+		if(this.nextShootTime >= 0)
 		{
 			this.nextShootTime -= this.shootingDuration;
 			this.setRotation();
@@ -510,7 +519,7 @@ class bulletSystem_bloom extends bulletSystem
 	shootBullets(delta)
 	{
 		this.nextShootTime += delta;
-		if(this.nextShootTime > this.shootingDuration)
+		if(this.nextShootTime >= 0)
 		{
 			this.nextShootTime -= this.shootingDuration;
 			let xPos=getRandomInt(0,4) * 160 - 240;
@@ -535,7 +544,7 @@ class bulletSystem_point extends bulletSystem
 		this.shootAngle=0;
 		this.beforeX=-2;
 
-		this.maxActiveTime=this.maxTime;
+//		this.maxActiveTime=this.maxTime;
 	}
 	setRotation()
 	{
@@ -546,7 +555,7 @@ class bulletSystem_point extends bulletSystem
 	{
 		this.nextShootTime += delta;
 		this.nextRotateTime += delta;
-		if(this.nextShootTime > this.shootingDuration)
+		if(this.nextShootTime >= 0)
 		{
 			this.nextShootTime -= this.shootingDuration;
 			this.setRotation();
@@ -567,18 +576,50 @@ class bulletSystem_point extends bulletSystem
 	}
 }
 
+class bulletSystem_rotation extends bulletSystem
+{
+	constructor(bit, _ways=6)
+	{
+		super();
+		this.nextShootTime=0.0;
+		this.shootingDuration=60000.0/BPM * (4/ bit);
+		this.ways=_ways;
+		this.angleIncrease=Math.PI / (_ways * 1.8);
+
+		this.shootPos={x:0, y:-230};
+		this.shootAngle=0;
+		this.maxActiveTime=60000.0/BPM * 28;
+	}
+	shootBullets(delta)
+	{
+		this.nextShootTime += delta;
+		if(this.nextShootTime >= 0)
+		{
+			this.nextShootTime -= this.shootingDuration;
+			let angleInterval=Math.PI*2/this.ways;
+			for(let i=0;i<this.ways;i++)
+			{
+				let r=angleInterval * i;
+				this.add_bullet(this.shootPos.x, this.shootPos.y, this.shootAngle + r, 1);
+			}
+			this.shootAngle += this.angleIncrease;
+		}
+	}
+}
+
 function chooseBulletSystem(index)
 {
 	switch(index)
 	{
-//		case 0: return new bulletSystem_basic(1, 8);
+		case 0: return new bulletSystem_basic(1, 8);
 		case 1: return new bulletSystem_basic(2, 4);
 		case 2: return new bulletSystem_slide();
 		case 3: return new bulletSystem_bloom();
-		case 0: return new bulletSystem_basic(3, 2);
+		case 4: return new bulletSystem_basic(3, 2);
 		case 5: return new bulletSystem_point(1, 16);
 		case 6: return new bulletSystem_basic(1, 16);
 		case 7: return new bulletSystem_bloom();
+		case 8: return new bulletSystem_rotation(8, 8);
 		case 9: return new bulletSystem_basic(1, 8);
 		default: return new bulletSystem_basic(1, 8);
 	}
@@ -591,7 +632,10 @@ let Butterfly_Bullethell=function(d)
 	let bullets=[];
 	let bulletSystems=[];
 	let currentPattern=0;
-	const matPatternCount = 8;
+	const matPatternCount = 10;
+	let removingTime=0.0;
+	let gameTime=0.0;
+	const delayTime=2233.333;
 
 	//player controls
 	let dx=0, dy=0;
@@ -645,17 +689,7 @@ let Butterfly_Bullethell=function(d)
 		}
 	}
 
-	//activate bullet system
-	let activateBulletSystem=function(delta)
-	{
-		if(currentPattern >= matPatternCount) return;
-		let c = bulletSystems[currentPattern].run(delta);
-		if(c == false)
-		{
-			player.scoreUp(1000);
-			currentPattern++;
-		}
-	}
+	//bullet acting
 	let moveBullets=function()
 	{
 		for(let i=0;i<bullets.length;i++)
@@ -672,15 +706,34 @@ let Butterfly_Bullethell=function(d)
 			let outbound=bullets[i].boundCheck();
 
 			if(isHit) playerHit=true;
-			if(isHit || outbound) bullets.splice(i,1);
+			if(isHit || outbound) bullets[i].isActive=false;
 		}
-		if(playerHit) player.damage();
+//		if(playerHit) player.damage();
 	}
 	let renderBullets=function(d)
 	{
 		for(let i=0;i<bullets.length;i++)
 		{
 			bullets[i].render(d);
+		}
+	}
+	let removeBullets=function()
+	{
+		for(let i=bullets.length-1;i>=0;i--)
+		{
+			if(!bullets[i].isActive) bullets.splice(i,1);
+		}
+	}
+
+	//activate bullet system
+	let activateBulletSystem=function(delta)
+	{
+		if(currentPattern >= matPatternCount) return;
+		let c = bulletSystems[currentPattern].run(delta);
+		if(c == false)
+		{
+			player.scoreUp(1000);
+			currentPattern++;
 		}
 	}
 
@@ -691,6 +744,7 @@ let Butterfly_Bullethell=function(d)
 		setBulletSystems();
 		dx=0; dy=0;
 		player.initialize();
+		gameTime=0;
 		console.log("initialize the game");
 	}
 
@@ -706,6 +760,8 @@ let Butterfly_Bullethell=function(d)
 		document.getElementById("game_over_screen").style.display='';
 		document.getElementById("game").style.display='none';
 		socket.emit('Send_Game_Over');
+		BGM.pause();
+		BGM.currentTime = 0;
 	}
 
 
@@ -731,17 +787,32 @@ let Butterfly_Bullethell=function(d)
 	{
 		if(isGamePlaying)
 		{
+			
 			let isMouseOn=_isMouseOn();
 			d.background(0);
 			inputKeys();
+			player.render(d);
+			gameTime += d.deltaTime;
+			if(gameTime < delayTime) return;
+
 			activateBulletSystem(d.deltaTime);
 			moveBullets();
 			detectBullets();
 			renderBullets(d);
-			player.render(d);
 			if(player.life < 0) game_over();
+			if(BGM.duration - BGM.currentTime <= 0.001) game_over();
+			removingTime+=d.deltaTime;
+			if(removingTime > 500)
+			{
+				removingTime-500;
+				removeBullets();
+			}
 		}
-	};
+	};/*
+	d.mousePressed=function()
+	{
+		console.log(BGM.duration);
+	}*/
 };
 new p5(Butterfly_Bullethell, 'game');
 
