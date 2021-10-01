@@ -758,8 +758,19 @@ let Butterfly_Bullethell=function(d)
 	{
 		isGamePlaying=false;
 		document.getElementById("game_over_screen").style.display='';
+		document.getElementById("game_over_text").innerText='GAME OVER';
 		document.getElementById("game").style.display='none';
 		socket.emit('Send_Game_Over');
+		BGM.pause();
+		BGM.currentTime = 0;
+	}
+	let game_clear=function()
+	{
+		isGamePlaying=false;
+		document.getElementById("game_over_screen").style.display='';
+		document.getElementById("game_over_text").innerText='THE END';
+		document.getElementById("game").style.display='none';
+		socket.emit('Send_Game_Clear');
 		BGM.pause();
 		BGM.currentTime = 0;
 	}
@@ -800,7 +811,7 @@ let Butterfly_Bullethell=function(d)
 			detectBullets();
 			renderBullets(d);
 			if(player.life < 0) game_over();
-			if(BGM.duration - BGM.currentTime <= 0.001) game_over();
+			if(BGM.duration - BGM.currentTime <= 0.001) game_clear();
 			removingTime+=d.deltaTime;
 			if(removingTime > 500)
 			{

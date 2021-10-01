@@ -71,6 +71,9 @@ io.on('connection', function(socket){
   socket.on('Send_Game_Over', function(){
     socket.broadcast.to(socket.room).emit("Receive_Game_Over");
   });
+  socket.on('Send_Game_Clear', function(){
+    socket.broadcast.to(socket.room).emit("Receive_Game_Clear");
+  });
 
   socket.on('disconnect', function(){
     socket.broadcast.to(socket.room).emit("Receive_Game_Over");

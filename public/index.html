@@ -19,7 +19,7 @@
 			<p>This page uses javascript. Please enable javascript in your browser settings and reflesh the page.</p>
 		</div>
 	</noscript>
-	<div id="intro_screen" class="container active_screen">
+	<div id="intro_screen" class="container">
 		<div id="preview_canvas"></div> <!-- three.js component -->
 		<div id="bg_txt">Butterfly<br/>Effect</div>
 		<div class="border_wrapper">
@@ -47,8 +47,9 @@
 			<div id="leave_button" class="button" >Leave the Room</div>
 		</div>
 	</div>
-	<div id="show_canvas" class="container"></div>
+	<div id="show_canvas" class="container active_screen"></div>
 	<script src="js/libs/socket.io.min.js"></script>
 	<script type="text/javascript" src="js/performance.js"></script>
+	<script type="module" src="js/performance_main.js"></script>
 </body>
 </html>
