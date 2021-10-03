@@ -176,5 +176,3 @@ socket.on('Receive_Game_Over', function(){ //start performing
 socket.on('Receive_Control', function(v){ //performers->clients controls
 	remoteControl(v, player, ballSystem);
 });
-
-

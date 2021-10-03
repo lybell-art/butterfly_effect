@@ -821,11 +821,6 @@ let Butterfly_Bullethell=function(d)
 				removeBullets();
 			}
 		}
-	};/*
-	d.mousePressed=function()
-	{
-		console.log(BGM.duration);
-	}*/
+	};
 };
 new p5(Butterfly_Bullethell, 'game');
-
