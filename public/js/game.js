@@ -297,6 +297,7 @@ class BE_bloomBullet extends BE_bullet{
 		this.allBullets = [];
 		this.splitCnt=4;
 		this.friction=0.99;
+		this.r2=Math.random()* 0.03 + 0.01;
 		if(args.length >0) this.splitCnt=args[0];
 		if(args.length >1) this.friction=args[1];
 	}
@@ -333,6 +334,7 @@ class BE_bloomBullet extends BE_bullet{
 		super.move(player);
 		this.dx *= this.friction;
 		this.dy *= this.friction;
+		this.r += this.r2;
 	}
 	render(d)
 	{
@@ -649,7 +651,7 @@ let Butterfly_Bullethell=function(d)
 		if(d.keyIsDown(65)) //A
 		{
 			player.move(-5,0);
-			dx+=-1;
+			dx-=1;
 		}
 		if(d.keyIsDown(68)) //D
 		{
@@ -659,12 +661,12 @@ let Butterfly_Bullethell=function(d)
 		if(d.keyIsDown(87)) //W
 		{
 			player.move(0,-5);
-			dy+=1;
+			dy-=1;
 		}
 		if(d.keyIsDown(83)) //S
 		{
 			player.move(0,5);
-			dy+=-1;
+			dy+=1;
 		}
 		socket.volatile.emit('Send_Control', {x:dx,y:dy});
 	}
@@ -708,7 +710,7 @@ let Butterfly_Bullethell=function(d)
 			if(isHit) playerHit=true;
 			if(isHit || outbound) bullets[i].isActive=false;
 		}
-//		if(playerHit) player.damage();
+		if(playerHit) player.damage();
 	}
 	let renderBullets=function(d)
 	{

@@ -2,7 +2,6 @@ const socket = io();
 const startButton=document.getElementById('join_button');
 const leaveButton=document.getElementById('leave_button');
 const noRoomWarningText=document.getElementById('no_room_warning');
-const BGM = new Audio("assets/music/Butterfly-and-Storm-2019.mp3");
 
 //screen transition
 function changeScreen(from, to)
@@ -36,12 +35,6 @@ function leave_room()
 	socket.emit('Leave_Room');
 }
 
-function end_room()
-{
-	changeScreen(3,1);
-	socket.emit('Leave_Room');
-}
-
 //activate warning message
 function show_noRoom_warning()
 {
@@ -61,6 +54,13 @@ noRoomWarningText.addEventListener('animationend', function()
 //sockets
 socket.on('Join_room', function(){ //waiting performing
 	changeScreen(1,2);
+});
+socket.on('Start_Performance', function(){ //start performing 
+	console.log("performance started");
+	changeScreen(2,3);
+});
+socket.on('Receive_Control', function(v){ //performers->clients controls
+	console.log(v.x, v.y);
 });
 socket.on('no_room', function(roomNo){ //when there is no room you inputted
 	console.log("failed!");

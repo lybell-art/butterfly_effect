@@ -72,7 +72,7 @@ io.on('connection', function(socket){
     socket.broadcast.to(socket.room).emit("Receive_Game_Over");
   });
   socket.on('Send_Game_Clear', function(){
-    socket.broadcast.to(socket.room).emit("Receive_Game_Clear");
+    socket.broadcast.to(socket.room).emit("Receive_Game_Over");
   });
 
   socket.on('disconnect', function(){

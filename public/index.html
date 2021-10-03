@@ -19,6 +19,14 @@
 			<p>This page uses javascript. Please enable javascript in your browser settings and reflesh the page.</p>
 		</div>
 	</noscript>
+	<div id="loading_screen" class="container active_screen">
+		<div class="border_wrapper">
+			<img id="waiting_ico" src="assets/butterfly_white.png" />
+			<p class="title">Loading...</p>
+			<p class="plain_txt">Loading assets...</p>
+			<p class="plain_txt">애셋을 불러오고 있습니다.</p>
+		</div>
+	</div>
 	<div id="intro_screen" class="container">
 		<div id="preview_canvas"></div> <!-- three.js component -->
 		<div id="bg_txt">Butterfly<br/>Effect</div>
@@ -47,7 +55,7 @@
 			<div id="leave_button" class="button" >Leave the Room</div>
 		</div>
 	</div>
-	<div id="show_canvas" class="container active_screen"></div>
+	<div id="show_canvas" class="container"></div>
 	<script src="js/libs/socket.io.min.js"></script>
 	<script type="text/javascript" src="js/performance.js"></script>
 	<script type="module" src="js/performance_main.js"></script>

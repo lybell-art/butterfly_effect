@@ -62,7 +62,14 @@
 	align-items: center;
 }
 
-#waiting_wrapper{
+#loading_screen .border_wrapper{
+	display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#waiting_screen .border_wrapper{
 	display: flex;
   flex-direction: column;
   align-items: center;

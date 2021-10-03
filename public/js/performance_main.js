@@ -1,81 +1,48 @@
 import * as THREE from './libs/three.module.js';
-import { OrbitControls } from './libs/plugins/OrbitControls.js';
+import {GLTFLoader} from './libs/plugins/GLTFLoader.js';
+import {OrbitControls} from './libs/plugins/OrbitControls.js';
+import {Butterfly, Ball_System, keyControl, keyUpControl, remoteControl} from './performance_obj.js';
 
-const previewScene=new THREE.Scene();
+
+//loader
+const loader=new THREE.LoadingManager(myLoadingComplete);
+const gltfLoader = new GLTFLoader(loader);
+gltfLoader.load("assets/butterfly.gltf", (gltf) => {
+	gltf.scene.traverse( function ( o ) { if ( o.isMesh ) o.castShadow = true;} );
+	Butterfly.model = gltf;
+});
+
+//scenes
 const mainScene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2400);
 const renderer = new THREE.WebGLRenderer();
 const container = document.getElementById("show_canvas");
-const GROUND_Y=-300;
 
 //objects
-const Spheres=[];
+let player=null, ballSystem=null;
 const clock = new THREE.Clock();
 
 //controls
+const orbitController = new OrbitControls( camera, renderer.domElement );
 const keyStates={};
-let orbitController = new OrbitControls( camera, renderer.domElement );
+let isPlaying=false;
 
-function getRandomInt(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min)) + min;
-}
+//basic function
 
-class BE_sphere
+function myLoadingComplete()
 {
-	static geometry=new THREE.SphereGeometry(20, 16, 12);
-	static material=new THREE.MeshStandardMaterial( {
-		color: 0xeeffff,
-		roughness: 0.5,
-		metalness: 0 } );
-	constructor(position, scene)
-	{
-		this.mesh=new THREE.Mesh(BE_sphere.geometry, BE_sphere.material);
-		this.mesh.castShadow=true;
-		this.mesh.receiveShadow=true;
-		this.position=this.mesh.position;
-		this.position.copy(position);
-		this.velocity=new THREE.Vector3(0,0,0);
-		scene.add(this.mesh);
-	}
-	setDirection(dir)
-	{
-		let vel=this.velocity.length();
-		this.velocity.copy(dir);
-		this.velocity.multiplyScalar(vel);
-	}
-	addForce(v)
-	{
-		this.velocity.add(v);
-		this.velocity.clampLength(0,10);
-	}
-	update()
-	{
-		this.position.add(this.velocity);
-	}
-}
-
-
-function sphereController()
-{
-	let vec=new THREE.Vector3(0,0,0);
-	if(keyStates['KeyW'] === true) vec.z+=0.2;
-	if(keyStates['KeyS'] === true) vec.z-=0.2;
-	if(keyStates['KeyA'] === true) vec.x-=0.2;
-	if(keyStates['KeyD'] === true) vec.x+=0.2;
-	for(let i=0;i<Spheres.length;i++)
-	{
-		Spheres[i].addForce(vec);
-	}
+	changeScreen(0,1);
+	console.log(Butterfly.model);
+	init();
+	animate();
 }
 
 function initGround(scene)
 {
 	const geometry=new THREE.PlaneGeometry( 5000, 5000 );
-	const material=new THREE.MeshLambertMaterial( { color: 0x3c4952 } );
+	const material=new THREE.MeshPhongMaterial( { color: 0x29354c } );
 	const mesh=new THREE.Mesh(geometry, material);
-	mesh.position.y = GROUND_Y;
+	mesh.position.y = -200;
 	mesh.rotation.x=-Math.PI/2;
 	mesh.receiveShadow=true;
 	scene.add(mesh);
@@ -83,9 +50,9 @@ function initGround(scene)
 
 function initLights(scene)
 {
-	scene.add( new THREE.HemisphereLight( 0xbbbbbb, 0x787878 ) );
+	scene.add( new THREE.HemisphereLight( 0xdddddd, 0x777777 ) );
 	const light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-	light.position.set( 100, 100, 0 );
+	light.position.set( 0, 400, 0 );
 	light.castShadow = true;
 
 	light.shadow.mapSize.width = 2048;
@@ -101,34 +68,30 @@ function initLights(scene)
 	light.shadow.camera.far = 4800;
 	light.shadow.bias = - 0.0001;
 
+	const spotLight = new THREE.SpotLight(0xffffff);
+	spotLight.position.set( 0, 600, 0 );
+	spotLight.penumbra=0.6;
+	spotLight.angle=Math.PI*0.1;
+	spotLight.target=player.body;
+
 	scene.add(light);
-}
-
-function initObj()
-{
-	for(let i=0;i<10;i++)
-	{
-		let pos=new THREE.Vector3(getRandomInt(-250,250), getRandomInt(-250,250), getRandomInt(-250,250));
-		let obj=new BE_sphere(pos, mainScene);
-		obj.velocity=new THREE.Vector3().random();
-		Spheres.push(obj);
-
-	}
-	initGround(mainScene);
-	initLights(mainScene);
-
-	const helper = new THREE.GridHelper( 10000, 2, 0xffffff, 0xffffff );
-	mainScene.add( helper );
+	scene.add(spotLight);
 }
 
 function init()
 {
-	camera.position.set(0, 0, 450);
+	camera.position.set(0, 320, 400);
+	camera.rotation.set(Math.atan2(320,400),0,0);
 	orbitController.update();
 	mainScene.background = new THREE.Color(0x111111);
 	mainScene.fog = new THREE.Fog(0x111111, 20, 2000);
+	player=new Butterfly();
+	player.addScene(mainScene);
 
-	initObj();
+	ballSystem=new Ball_System();
+	ballSystem.addScene(mainScene);
+	initGround(mainScene);
+	initLights(mainScene);
 
 	//renderer setting
 	renderer.setPixelRatio( window.devicePixelRatio );
@@ -142,34 +105,45 @@ function init()
 function animate()
 {
 	requestAnimationFrame( animate );
+	if(!isPlaying) return;
 	const deltaTime = Math.min( 0.1, clock.getDelta() );
-	sphereController();
-	for(let i=0;i<Spheres.length;i++)
+	player.update(deltaTime);
+	ballSystem.update(deltaTime, player);
+	if(ballSystem.isEndingScene)
 	{
-		Spheres[i].update();
+		if(BGM.volume > 0)
+		{
+			let p=BGM.volume;
+			p -= 1/32;
+			if(p < 0) p =0;
+			BGM.volume = p;
+		}
 	}
-	render();
-}
-function render()
-{
+	if(ballSystem.isEnd())
+	{
+		isPlaying=false;
+		end_room();
+		BGM.pause();
+		BGM.currentTime = 0;
+	}
 	renderer.render( mainScene, camera );
 }
-init();
-animate();
 
 
 function addEventListeners()
 {
-	document.addEventListener( 'keydown', ( e ) => {
+/*	document.addEventListener( 'keydown', ( e ) => {
 		keyStates[ e.code ] = true;
+		keyControl(keyStates, player, ballSystem);
+		if(e.code == "KeyZ") player.changeMode(1);
+		if(e.code == "KeyX") player.changeMode(0);
 	} );
 	document.addEventListener( 'keyup', ( e ) => {
 		keyStates[ e.code ] = false;
-	} );
-
+		keyUpControl(keyStates);
+	} );*/
 	window.addEventListener( 'resize', onWindowResize );
 }
-
 
 function onWindowResize() {
 
@@ -178,3 +152,29 @@ function onWindowResize() {
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
 }
+
+
+
+
+socket.on('Start_Performance', function(){ //start performing 
+	console.log("performance started");
+	if(!isPlaying)
+	{
+		changeScreen(2,3);
+		player.reset();
+		ballSystem.reset();
+		isPlaying=true;
+		BGM.play();
+		BGM.volume=1;
+	}
+});
+socket.on('Receive_Game_Over', function(){ //start performing 
+	console.log("performance ended");
+	remoteControl({x:0, y:0}, player, ballSystem);
+	ballSystem.callGameOver();
+});
+socket.on('Receive_Control', function(v){ //performers->clients controls
+	remoteControl(v, player, ballSystem);
+});
+
+
