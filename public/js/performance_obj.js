@@ -567,7 +567,7 @@ class Ball_System
 	{
 		this.time+=delta;
 		if(this.time < DELAY_TIME) return;
-		if(this.isActive && this.ballModeMode != GAMEOVER_BALL) this.controlBalls(delta, player);
+		if(this.isActive && this.ballMoveMode != GAMEOVER_BALL) this.controlBalls(delta, player);
 		this.moveBalls(delta, player);
 	}
 	setLerp()

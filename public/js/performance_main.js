@@ -32,7 +32,6 @@ let isPlaying=false;
 function myLoadingComplete()
 {
 	changeScreen(0,1);
-	console.log(Butterfly.model);
 	init();
 	animate();
 }
